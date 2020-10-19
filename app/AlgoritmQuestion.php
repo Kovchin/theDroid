@@ -14,7 +14,13 @@ class AlgoritmQuestion extends Model
         'algoritm_id'
     ];
 
-    public function answers(){
-        return $this->hasMany('App\AlgoritmAnswer','algoritm_question_id');
+    public function answers()
+    {
+        return $this->hasMany('App\AlgoritmAnswer', 'algoritm_question_id');
+    }
+
+    public function algoritm()
+    {
+        return $this->belongsTo('App\Algoritm', 'algoritm_id');
     }
 }

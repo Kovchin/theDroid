@@ -12,12 +12,11 @@
                 </ul>
             </div>
             <div class="col-10">
-                <h1 class="text-right">Действия персонала согласно алгоритму</h1>
-                <p>{{ $algoritm->question }}</p>
+                <h1 class="text-right">Действия персонала согласно алгоритму {{ $algoritm->name }}</h1>
+                <p>Здесь должен отобразиться главный вопрос алгоритма</p>
                 <button class="btn btn-success">да</button>
                 <button class="btn btn-success">нет</button>
                 <button class="btn btn-success">подумаю</button>
-
             </div>
         </div>
     </div>

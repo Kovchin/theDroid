@@ -8,13 +8,16 @@
         <div class="row">
             <div class="col-2">
                 <ul>
-                    @foreach($mainQuestions as $mainQuestion)
-                        <li class="text-truncate"><a href="algoritms/{{$mainQuestion->id}}">{{$mainQuestion->question}}</a></li>
+                    @foreach($algoritms as $algoritm)
+                        <li>
+                            <a href="/algoritms/{{$algoritm->id}}">{{$algoritm->name}}</a>
+                        </li>
                     @endforeach
                 </ul>
             </div>
             <div class="col-10">
-                234
+
+
             </div>
         </div>
     </div>

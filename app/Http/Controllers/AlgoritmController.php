@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Algoritm;
 use App\AlgoritmQuestion;
 use Illuminate\Http\Request;
+use Illuminate\Queue\Console\RetryCommand;
 
 class AlgoritmController extends Controller
 {
@@ -14,8 +16,11 @@ class AlgoritmController extends Controller
      */
     public function index()
     {
-        $mainQuestions = AlgoritmQuestion::all()->where('root_question_id', 3);
-        return view('Algoritm/index', compact('mainQuestions'));
+//        $mainQuestions = AlgoritmQuestion::all()->where('root_question_id', 3);
+        $algoritms = Algoritm::all();
+
+
+        return view('Algoritm/index', compact('algoritms'));
     }
 
     /**
@@ -25,7 +30,7 @@ class AlgoritmController extends Controller
      */
     public function create()
     {
-        return 'Создать';
+        return view('/algoritm/create');
     }
 
     /**
@@ -36,7 +41,15 @@ class AlgoritmController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $algoritm = new Algoritm([
+            'name' => $request->name,
+            'shortName' => $request->shortName,
+            'description' => $request->description
+        ]);
+
+        $algoritm->save();
+
+        return redirect("/algoritms/{$algoritm->id}");
     }
 
     /**
@@ -47,7 +60,7 @@ class AlgoritmController extends Controller
      */
     public function show($id)
     {
-        $algoritm = AlgoritmQuestion::findOrFail($id);
+        $algoritm = Algoritm::findOrFail($id);
 
         return view('algoritm/show', compact('algoritm'));
     }

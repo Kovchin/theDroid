@@ -13,4 +13,8 @@ class Algoritm extends Model
         'name',
         'description'
     ];
+
+    public function questions(){
+        return $this->hasMany('App\AlgoritmQuestion', 'algoritm_id');
+    }
 }

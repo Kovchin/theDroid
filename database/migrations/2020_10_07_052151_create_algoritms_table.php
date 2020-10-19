@@ -15,9 +15,9 @@ class CreateAlgoritmsTable extends Migration
     {
         Schema::create('algoritms', function (Blueprint $table) {
             $table->id();
-            $table->string('shortName');
+            $table->string('shortName')->nullable();
             $table->string('name');
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }
