@@ -19,5 +19,16 @@
                 <button class="btn btn-success">подумаю</button>
             </div>
         </div>
+        <div class="row">
+                <input type="text">
+                <select>
+                    @foreach($questions as $question)
+                        <option>
+                            {{$question->question}}
+                        </option>
+                    @endforeach
+                </select>
+                <input type="submit" value="Добавить условие">
+        </div>
     </div>
 @endsection

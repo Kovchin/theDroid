@@ -62,7 +62,9 @@ class AlgoritmController extends Controller
     {
         $algoritm = Algoritm::findOrFail($id);
 
-        return view('algoritm/show', compact('algoritm'));
+        $questions = $algoritm->questions;
+
+        return view('algoritm/show', compact('algoritm', 'questions'));
     }
 
     /**
@@ -73,7 +75,13 @@ class AlgoritmController extends Controller
      */
     public function edit($id)
     {
-        //
+        $algoritm = Algoritm::findOrFail($id);
+
+        $questions = $algoritm->questions;
+
+//        $answers = $questions->answers;
+
+        return view('algoritm/edit', compact('algoritm', 'questions'));
     }
 
     /**
