@@ -35,4 +35,7 @@ Route::get('/testUpload', 'UploadController@index');
 Route::post('/testUpload', 'UploadController@upload');
 Route::post('/testUpload2', 'UploadController@upload2');
 
+Route::post('/algoritms/{id_algoritms}/addDefaultQuestions', 'AlgoritmController@addDefaultQuestions');
+Route::post('/algoritms/{id_algoritms}/{id_questions}/addDefaultResponses', 'AlgoritmController@addDefaultResponses');
+
 

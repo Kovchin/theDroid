@@ -15,9 +15,9 @@ class CreateAlgoritmQuestionsTable extends Migration
     {
         Schema::create('algoritm_questions', function (Blueprint $table) {
             $table->id();
-            $table->string('question');
+            $table->string('question')->nullable('NULL');
             $table->boolean('mainQuestion')->nullable('NULL');
-            $table->foreignId('algoritm_id')->constrained('algoritms')->delete('cascade');
+            $table->foreignId('algoritm_id')->constrained('algoritms')->onDelete('cascade');
             $table->timestamps();
         });
     }

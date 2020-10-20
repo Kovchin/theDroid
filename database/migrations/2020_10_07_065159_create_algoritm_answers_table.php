@@ -16,7 +16,7 @@ class CreateAlgoritmAnswersTable extends Migration
         Schema::create('algoritm_answers', function (Blueprint $table) {
             $table->id();
             $table->string('answer');
-            $table->foreignId('algoritm_question_id')->constrained('algoritm_questions')->delete('cascade');
+            $table->foreignId('algoritm_question_id')->constrained('algoritm_questions')->onDelete('cascade');
             $table->bigInteger('link_question_id')->nullable();
             $table->timestamps('');
         });

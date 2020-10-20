@@ -47,9 +47,11 @@ class AlgoritmController extends Controller
             'description' => $request->description
         ]);
 
+//        dd($algoritm);
+
         $algoritm->save();
 
-        return redirect("/algoritms/{$algoritm->id}");
+        return redirect("/algoritms/{$algoritm->id}/edit");
     }
 
     /**
@@ -77,9 +79,9 @@ class AlgoritmController extends Controller
     {
         $algoritm = Algoritm::findOrFail($id);
 
-        $questions = $algoritm->questions;
+        $questions = $algoritm->questions->all();
 
-//        $answers = $questions->answers;
+        //dd($questions);
 
         return view('algoritm/edit', compact('algoritm', 'questions'));
     }
@@ -106,4 +108,43 @@ class AlgoritmController extends Controller
     {
         //
     }
+
+    public function addDefaultQuestions(Request $request, $id_algoritms)
+    {
+
+        $algoritm = Algoritm::findOrFail($id_algoritms);
+
+        //Заводим записи только если их нет в базе данных
+        if ($algoritm->questions->count() <= 0) {
+            for ($i = 1; $i < $request->addCount + 1; $i++) {
+
+                $algoritm->questions()->create(['question' => 'Вопрос № ' . $i]);
+            }
+        }
+
+        return redirect('/algoritms/' . $id_algoritms . '/edit ');
+    }
+
+    public function addDefaultResponses(Request $request)
+    {
+        $question = AlgoritmQuestion::findOrFail($request->id_questions);
+
+        if ($question->answers->count() <= 0) {
+            for ($i = 1; $i < $request->addCount + 1; $i++) {
+                $question->answers()->create(['answer' => 'Ответ № ' . $i,'']);
+            }
+        }
+
+        return redirect('/algoritms/' . $request->id_algoritms . '/edit ');
+    }
+
+    public function deleteQuestion($id){
+
+    }
+
+    public function deleteAnswer($id){
+
+    }
+
+
 }

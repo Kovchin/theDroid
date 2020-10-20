@@ -63,7 +63,7 @@ namespace App{
  * App\AlgoritmQuestion
  *
  * @property int $id
- * @property string $question
+ * @property string|null $question
  * @property int|null $mainQuestion
  * @property int $algoritm_id
  * @property \Illuminate\Support\Carbon|null $created_at
