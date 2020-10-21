@@ -35,7 +35,17 @@ Route::get('/testUpload', 'UploadController@index');
 Route::post('/testUpload', 'UploadController@upload');
 Route::post('/testUpload2', 'UploadController@upload2');
 
+//Костыль маршрутизации для создания алгоритмов (как нибудь нужно будет это все засунуть в ресурсные контроллеры)
 Route::post('/algoritms/{id_algoritms}/addDefaultQuestions', 'AlgoritmController@addDefaultQuestions');
 Route::post('/algoritms/{id_algoritms}/{id_questions}/addDefaultResponses', 'AlgoritmController@addDefaultResponses');
 
+Route::get('/algoritms/{id_algoritms}/addSingleQuestion', 'AlgoritmController@addSingleQuestion');
+//С этим маршрутом была какая то лажа... Еле победил потому оставил как есть, надо в перспективе будет переписать на ресурсных контроллерах
+Route::get('/algoritmss/{id_algoritm}/{id_question}/addSingleeAnswer', 'AlgoritmController@addSingleeAnswer');
+
+Route::get('/algoritms/{id_algoritm}/{id_question}/deleteQuestion', 'AlgoritmController@deleteQuestion');
+Route::get('/algoritms/{id_algoritm}/{id_response}/deleteAnswer', 'AlgoritmController@deleteAnswer');
+
+Route::post('/algoritms/updateQuestion', 'AlgoritmController@updateQuestion');
+Route::post('/algoritms/updateAnswer', 'AlgoritmController@updateAnswer');
 

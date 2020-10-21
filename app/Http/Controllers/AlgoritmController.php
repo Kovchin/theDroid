@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Algoritm;
+use App\AlgoritmAnswer;
 use App\AlgoritmQuestion;
 use Illuminate\Http\Request;
 use Illuminate\Queue\Console\RetryCommand;
+use Symfony\Component\Console\Question\Question;
 
 class AlgoritmController extends Controller
 {
@@ -16,7 +18,6 @@ class AlgoritmController extends Controller
      */
     public function index()
     {
-//        $mainQuestions = AlgoritmQuestion::all()->where('root_question_id', 3);
         $algoritms = Algoritm::all();
 
 
@@ -46,8 +47,6 @@ class AlgoritmController extends Controller
             'shortName' => $request->shortName,
             'description' => $request->description
         ]);
-
-//        dd($algoritm);
 
         $algoritm->save();
 
@@ -95,7 +94,13 @@ class AlgoritmController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $algoritm = Algoritm::findOrFail($id)->update(
+            ['name' => $request->name,
+                'shortName' => $request->shortName,
+                'description' => $request->description
+            ]);
+
+        return redirect('/algoritms/' . $id . '/edit');
     }
 
     /**
@@ -106,9 +111,16 @@ class AlgoritmController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Algoritm::destroy($id);
+
+        return redirect('/algoritms');
     }
 
+    /**
+     * @param Request $request
+     * @param $id_algoritms
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function addDefaultQuestions(Request $request, $id_algoritms)
     {
 
@@ -125,26 +137,94 @@ class AlgoritmController extends Controller
         return redirect('/algoritms/' . $id_algoritms . '/edit ');
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function addDefaultResponses(Request $request)
     {
         $question = AlgoritmQuestion::findOrFail($request->id_questions);
 
         if ($question->answers->count() <= 0) {
             for ($i = 1; $i < $request->addCount + 1; $i++) {
-                $question->answers()->create(['answer' => 'Ответ № ' . $i,'']);
+                $question->answers()->create(['answer' => 'Ответ № ' . $i, '']);
             }
         }
 
         return redirect('/algoritms/' . $request->id_algoritms . '/edit ');
     }
 
-    public function deleteQuestion($id){
+    /**
+     * @param $id_algoritm
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function addSingleQuestion($id_algoritm)
+    {
+        $question = Algoritm::findOrFail($id_algoritm)->questions()->create(['question' => 'Новый вопрос']);
 
+        return redirect('/algoritms/' . $id_algoritm . '/edit');
     }
 
-    public function deleteAnswer($id){
+    /**
+     * @param $id_algoritm
+     * @param $id_question
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function addSingleeAnswer($id_algoritm, $id_question)
+    {
 
+        $algoritmQuestion = AlgoritmQuestion::findOrFail($id_question)->answers()->create(['answer' => 'Новый ответ']);
+
+        return redirect('/algoritms/' . $id_algoritm . '/edit');
     }
 
+    /**
+     * @param $id_algoritm
+     * @param $id_question
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function deleteQuestion($id_algoritm, $id_question)
+    {
+        AlgoritmQuestion::destroy($id_question);
+
+        return redirect('/algoritms/' . $id_algoritm . '/edit');
+    }
+
+    /**
+     * @param $id_algoritm
+     * @param $id_response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function deleteAnswer($id_algoritm, $id_response)
+    {
+        AlgoritmAnswer::destroy($id_response);
+
+        return redirect('/algoritms/' . $id_algoritm . '/edit');
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function updateQuestion(Request $request)
+    {
+        AlgoritmQuestion::findOrFail($request->id_question)->update(
+            [
+                'question' => $request->question,
+            ]);
+
+        return redirect('/algoritms/' . $request->id_algoritm . '/edit');
+    }
+
+    public function updateAnswer(Request $request)
+    {
+        AlgoritmAnswer::findOrFail($request->answer_id)->update(
+            [
+                'answer'=>$request->answer,
+                'link_question_id' => $request->link_question_id
+            ]);
+
+        return redirect('/algoritms/' . $request->id_algoritm . '/edit');
+    }
 
 }

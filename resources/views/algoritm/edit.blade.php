@@ -14,7 +14,7 @@
 
         <div class="row">
             <div class="col bg-light p-3">
-                <form action="" method="POST">
+                <form action="/algoritms/{{$algoritm->id}}" method="POST">
                     @csrf
                     @method('PATCH')
 
@@ -34,18 +34,47 @@
                                   rows="3"> {{$algoritm->description}}
                         </textarea>
                     </div>
-                    <div class="form-group">
-                        <input class='btn btn-secondary' type="submit" value="Редактировать алгоритм">
-                        <button class="btn btn-danger">Удалить алгоритм</button>
-                    </div>
+                    <table>
+                        <tr>
+                            <td>
+                                <div class="form-group">
+                                    <input class='btn btn-secondary form-control' type="submit"
+                                           value="Редактировать алгоритм">
+                                </div>
+                            </td>
+
                 </form>
+                <td>
+                    <form method="POST" action="/algoritms/{{$algoritm->id}}">
+                        @csrf
+                        @method('DELETE')
+                        <div class="form-group">
+                            <button class="form-control btn btn-danger">Удалить алгоритм</button>
+                        </div>
+                    </form>
+                </td>
+                </tr>
+            </div>
+
+            <div class="form-group">
+                @if($algoritm->questions()->count() > 0)
+                    <tr>
+                        <td>
+                            <a class="btn btn-primary form-control"
+                               href="/algoritms/{{$algoritm->id}}/addSingleQuestion">Добавить вопрос</a>
+                        </td>
+                    </tr>
+                    @endif
+
+                    </table>
             </div>
         </div>
 
         {{--Редактирование вопросов--}}
 
         {{--        Пакетное добавление вопросов в алгоритме работает только если нет связанных к алгоритму вопросов--}}
-        @if($algoritm->questions()->count() ==0)
+
+        @if($algoritm->questions()->count() == 0)
 
             <div class="row">
                 <div class="col m-3 p-3 bg-light">
@@ -71,20 +100,27 @@
                 <div class="col">
                     <div class="card">
                         <div class="card-body">
-                            <div class="form-group">
-                                <textarea class="form-control" type="text" name="description" placeholder="Вопрос"
-                                          rows="3">
-                                    {{$singleQuestion->question}}
+                            <form action="/algoritms/updateQuestion"
+                                  method="POST">
+                                @csrf
+
+                                <input class="invisible" type="text" name="id_algoritm" value="{{$algoritm->id}}">
+                                <input class="invisible" type="text" name="id_question" value="{{$singleQuestion->id}}">
+
+                                <div class="form-group">
+                                <textarea class="form-control" type="text" name="question" placeholder="Вопрос"
+                                          rows="3">{{$singleQuestion->question}}
                                 </textarea>
-                            </div>
+                                </div>
 
-                            {{--Управление вопросом--}}
-                            <div class="row m-2">
-                                <button class="btn btn-secondary">Редактировать вопрос</button>
-                                <button class="btn btn-primary">Добавить вопрос</button>
-                                <button class="btn btn-danger">Удалить вопрос</button>
-                            </div>
-
+                                {{--Управление вопросом--}}
+                                <div class="row m-2">
+                                    <button class="btn btn-secondary">Редактировать вопрос</button>
+                                    <a class="btn btn-danger"
+                                       href="/algoritms/{{$algoritm->id}}/{{$singleQuestion->id}}/deleteQuestion">Удалить
+                                        вопрос</a>
+                                </div>
+                            </form>
                             {{--Эта форма для пакетного добавления ответов на вопрос в алгоритме работает если на вопрос нет ответов в базе данных--}}
                             <div class="row m-2">
                                 @if($singleQuestion->answers()->count() == 0)
@@ -102,7 +138,8 @@
                                     </div>
                                 @else
                                     {{--                                Если вопрос есть то отражаем навигацию что бы ими манипулировать--}}
-                                    <button class="btn btn-primary">Добавить ответ</button>
+                                    <a href="/algoritmss/{{$algoritm->id}}/{{$singleQuestion->id}}/addSingleeAnswer"
+                                       class="btn btn-primary">Добавить ответ</a>
                                 @endif
                             </div>
 
@@ -112,30 +149,40 @@
                             <div class="row m-2">
                                 <div class="form-group">
                                     <table>
-
                                         @foreach($singleQuestion->answers as $answer)
-                                            <tr>
-                                                <td>
-                                                    <input class="form-control" type="text" name="" id=""
-                                                           value="{{$answer->answer}}" placeholder="Ответ">
-                                                </td>
-                                                <td>
-                                                    <select class="form-control" name="" id="">
-                                                        <option value="">-- Узел не выбран --</option>
-                                                        @foreach($questions as $singleQuestion)
-                                                            <option value="">
-                                                                {{$singleQuestion->question}}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </td>
+                                            <form action="/algoritms/updateAnswer" method="POST">
+                                                @csrf
+                                                <input class="invisible" type="text" name="id_algoritm"
+                                                       value="{{$algoritm->id}}">
+                                                <input class="invisible" type="text" name="answer_id"
+                                                       value="{{$answer->id}}">
+                                                <tr>
+                                                    <td>
+                                                        <input class="form-control" type="text" name="answer" id=""
+                                                               value="{{$answer->answer}}" placeholder="Ответ">
+                                                    </td>
+                                                    <td>
+                                                        <select class="form-control" name="link_question_id" id="">
+                                                            <option value="">-- Узел не выбран --</option>
+                                                            @foreach($questions as $singleQuestion)
+                                                                <option @if($singleQuestion->id == $answer->link_question_id)
+                                                                        selected
+                                                                        @endif
+                                                                        value="{{$singleQuestion->id}}">{{$singleQuestion->question}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </td>
 
-                                                <td>
-                                                    <button class="btn btn-secondary">Редактировать ответ</button>
-                                                </td>
-                                                <td>
-                                                    <button class="btn btn-danger">Удалить ответ</button>
-                                                </td>
+                                                    <td>
+                                                        <input class="btn btn-secondary" type="submit"
+                                                               value="Редактировать ответ">
+                                                    </td>
+                                            </form>
+                                            <td>
+                                                <a class="btn btn-danger"
+                                                   href="/algoritms/{{$algoritm->id}}/{{$answer->id}}/deleteAnswer">Удалить
+                                                    ответ</a>
+                                            </td>
                                             </tr>
                                         @endforeach
 

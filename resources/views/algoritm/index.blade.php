@@ -6,19 +6,17 @@
 
     <div class="container bg-white">
         <div class="row">
-            <div class="col-2">
-                <ul>
-                    @foreach($algoritms as $algoritm)
-                        <li>
-                            <a href="/algoritms/{{$algoritm->id}}">{{$algoritm->name}}</a>
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
-            <div class="col-10">
+            <table class="table">
+
+                @foreach($algoritms as $algoritm)
+                    <tr>
+                        <td><a href="/algoritms/{{$algoritm->id}}">{{$algoritm->name}}</a></td>
+                        <td><a class="btn btn-secondary" href="/algoritms/{{$algoritm->id}}/edit">edit</a></td>
+                    </tr>
+                @endforeach
 
 
-            </div>
+            </table>
         </div>
     </div>
 
