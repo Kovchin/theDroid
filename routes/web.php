@@ -49,3 +49,5 @@ Route::get('/algoritms/{id_algoritm}/{id_response}/deleteAnswer', 'AlgoritmContr
 Route::post('/algoritms/updateQuestion', 'AlgoritmController@updateQuestion');
 Route::post('/algoritms/updateAnswer', 'AlgoritmController@updateAnswer');
 
+Route::get('/algoritms/{id_algoritm}/{id_question}', 'AlgoritmController@showAlgoritm');
+

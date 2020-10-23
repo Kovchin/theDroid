@@ -4,31 +4,34 @@
 @section('content')
     <div class="container bg-light">
         <div class="row">
+            {{--Боковое меню данные берутся из сессии а в сессию их загружает контроллер--}}
             <div class="col-2">
-                <ul>
-                    <li>
-
-                    </li>
+                <ul class="m-3">
+                    @foreach($request->session()->get('id_question') as $key => $record)
+                        <li>
+                            <a class="" href="{{$record}}"><p
+                                    class="text-truncate">{{$request->session()->get('question')[$key]}}</p></a>
+                        </li>
+                    @endforeach
                 </ul>
             </div>
-            <div class="col-10">
-                <h1 class="text-right">Действия персонала согласно алгоритму {{ $algoritm->name }}</h1>
-                <p>Здесь должен отобразиться главный вопрос алгоритма</p>
-                <button class="btn btn-success">да</button>
-                <button class="btn btn-success">нет</button>
-                <button class="btn btn-success">подумаю</button>
+
+            {{--            Основной блок отображения вопросов--}}
+            <div class="col-10 min-vh-100">
+
+                {{--                Ссылка на первый вопрос алгоритма--}}
+                <h2 class="text-right m-3"><a href="/algoritms/{{$algoritm->id}}">{{ $algoritm->name}}</a></h2>
+
+                {{--Вопрос                --}}
+                <h4>{{$question->question}}</h4>
+
+                {{--                Блок кнопок ответов--}}
+                @foreach($answers as $answer)
+                    <a class="btn btn-success"
+                       href="/algoritms/{{$algoritm->id}}/{{$answer->link_question_id}}">{{$answer->answer}}</a>
+                @endforeach
             </div>
         </div>
-        <div class="row">
-                <input type="text">
-                <select>
-                    @foreach($questions as $question)
-                        <option>
-                            {{$question->question}}
-                        </option>
-                    @endforeach
-                </select>
-                <input type="submit" value="Добавить условие">
-        </div>
+
     </div>
 @endsection

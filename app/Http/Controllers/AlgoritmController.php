@@ -59,13 +59,16 @@ class AlgoritmController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
+        $request->session()->flush();
+
         $algoritm = Algoritm::findOrFail($id);
 
-        $questions = $algoritm->questions;
+        $question = $algoritm->questions()->firstOrFail();
 
-        return view('algoritm/show', compact('algoritm', 'questions'));
+        return redirect('/algoritms/' . $id . '/' . $question->id);
+
     }
 
     /**
@@ -129,7 +132,6 @@ class AlgoritmController extends Controller
         //Заводим записи только если их нет в базе данных
         if ($algoritm->questions->count() <= 0) {
             for ($i = 1; $i < $request->addCount + 1; $i++) {
-
                 $algoritm->questions()->create(['question' => 'Вопрос № ' . $i]);
             }
         }
@@ -220,11 +222,27 @@ class AlgoritmController extends Controller
     {
         AlgoritmAnswer::findOrFail($request->answer_id)->update(
             [
-                'answer'=>$request->answer,
+                'answer' => $request->answer,
                 'link_question_id' => $request->link_question_id
             ]);
 
         return redirect('/algoritms/' . $request->id_algoritm . '/edit');
     }
+
+    public function showAlgoritm($id_algoritm, $id_question, Request $request)
+    {
+
+        $algoritm = Algoritm::findOrFail($id_algoritm);
+        $questions = $algoritm->questions;
+        $question = AlgoritmQuestion::findOrFail($id_question);
+        $answers = $question->answers;
+
+        $request->session()->put('id_algoritm', $id_algoritm);
+        $request->session()->push('id_question', $id_question);
+        $request->session()->push('question', $question->question);
+
+        return view('algoritm/show', compact('algoritm', 'question', 'answers', 'request' , 'questions'));
+    }
+
 
 }
