@@ -7,6 +7,14 @@
 {{--<img src="/img/main.jpg" alt="">--}}
 
 <div class="container">
+
+    <div class="bg-info">
+        <ul>
+            <li class="text-light">Ведение проекта в Рэдмайн (Гизатуллин Н.Р., Пищулин В.В.) <a class="text-white" href="http://172.16.1.75/sprints/258">Редмайн</a></li>
+            <li class="text-white">Размещение документации на портале (Пищулин В.В.) <a class="text-white" href="https://clck.ru/SAHHy">Портал</a></li>
+        </ul>
+    </div>
+
     <div class="row justify-content-end">
         <h1 class="text-right">The Droid 2.0</h1>
     </div>
@@ -39,6 +47,7 @@
             </div>
         </div>
     </div>
+
 
 
     <div class="row mt-5">

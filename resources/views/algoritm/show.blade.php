@@ -5,7 +5,7 @@
     <div class="container bg-light">
         <div class="row">
             {{--Боковое меню данные берутся из сессии а в сессию их загружает контроллер--}}
-            <div class="col-2">
+            <div class="col-4">
                 <ul class="m-3">
                     @foreach($request->session()->get('id_question') as $key => $record)
                         <li>
@@ -17,7 +17,7 @@
             </div>
 
             {{--            Основной блок отображения вопросов--}}
-            <div class="col-10 min-vh-100">
+            <div class="col-8 min-vh-100">
 
                 {{--                Ссылка на первый вопрос алгоритма--}}
                 <h2 class="text-right m-3"><a href="/algoritms/{{$algoritm->id}}">{{ $algoritm->name}}</a></h2>

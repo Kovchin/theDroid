@@ -51,3 +51,5 @@ Route::post('/algoritms/updateAnswer', 'AlgoritmController@updateAnswer');
 
 Route::get('/algoritms/{id_algoritm}/{id_question}', 'AlgoritmController@showAlgoritm');
 
+//Тестовый маршрут для открытия директории
+Route::get('/system/openFolder/{id_route}', 'ShowFolder@showRequestedFolder');

@@ -10,7 +10,7 @@
 
                 @foreach($algoritms as $algoritm)
                     <tr>
-                        <td><a href="/algoritms/{{$algoritm->id}}">{{$algoritm->name}}</a></td>
+                        <td><a class="h3" href="/algoritms/{{$algoritm->id}}">{{$algoritm->name}}</a></td>
                         <td><a class="btn btn-secondary" href="/algoritms/{{$algoritm->id}}/edit">edit</a></td>
                         <td>
                             <form action="/algoritms/{{$algoritm->id}}" method="POST">
