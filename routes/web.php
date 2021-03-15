@@ -53,3 +53,6 @@ Route::get('/algoritms/{id_algoritm}/{id_question}', 'AlgoritmController@showAlg
 
 //Тестовый маршрут для открытия директории
 Route::get('/system/openFolder/{id_route}', 'ShowFolder@showRequestedFolder');
+Route::get('/test', function (){
+    return view('test');
+});
